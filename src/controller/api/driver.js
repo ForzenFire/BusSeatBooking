@@ -3,17 +3,17 @@ const express = require('express');
 const {
     createDriver,
     getDrivers,
-    getDriverByNic,
+    getDriverById,
     updateDriver,
-    deleteDriver,
+    // deleteDriver,
 } = require('./driverController');
 
 const router = express.Router();
 
 router.post('/', createDriver);            
 router.get('/', getDrivers);              
-router.get('/:nic', getDriverByNic);       
+router.get('/:nic', getDriverById);       
 router.put('/:nic', updateDriver);         
-router.delete('/:nic', deleteDriver);     
+// router.delete('/:nic', deleteDriver);     
 
 module.exports = router;

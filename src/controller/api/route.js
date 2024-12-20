@@ -1,5 +1,5 @@
 const express = require('express');
-const { createRoute, getRoute, getRouteById, updateRoute, deleteRoute, getRoutes, } =require('./routeController');
+const { createRoute, getRoutes, getRouteById, updateRoute, deleteRoute, } =require('./routeController');
 
 const router = express.Router();
 
