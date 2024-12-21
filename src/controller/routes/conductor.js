@@ -1,5 +1,5 @@
 const express = require('express');
-const { createConductor, getConductors, getConductorById, updateConductor, deleteConductor, } = require('./conductorController');
+const { createConductor, getConductors, getConductorById, updateConductor, deleteConductor, } = require('../api/conductorController');
 
 const router = express.Router();
 

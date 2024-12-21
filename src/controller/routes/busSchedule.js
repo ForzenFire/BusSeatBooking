@@ -1,5 +1,5 @@
 const express = require('express');
-const { createBusSchedule, getBusSchedules, getBusSchedulesById, updateBusSchedule, deleteBusSchedule, } = require('./busScheduleController');
+const { createBusSchedule, getBusSchedules, getBusSchedulesById, updateBusSchedule, deleteBusSchedule, } = require('../api/busScheduleController');
 
 const router = express.Router();
 

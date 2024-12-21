@@ -9,17 +9,19 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 
-const routeRoutes = require('./controller/api/route');
-const driverRoutes = require('./controller/api/driver');
-const busRoutes = require('./controller/api/bus');
-const conductorRoutes = require('./controller/api/conductor');
-const busScheduleROutes = require('./controller/api/busSchedule');
+const routeRoutes = require('./controller/routes/route');
+const driverRoutes = require('./controller/routes/driver');
+const busRoutes = require('./controller/routes/bus');
+const conductorRoutes = require('./controller/routes/conductor');
+const busScheduleROutes = require('./controller/routes/busSchedule');
+const authRoutes = require('./controller/routes/auth');
 
 app.use('/api/routes', routeRoutes);
 app.use('/api/drivers', driverRoutes);
 app.use('/api/buses', busRoutes);
 app.use('/api/schedule', busScheduleROutes);
 app.use('/api/conductor', conductorRoutes);
+app.use('/api/auth', authRoutes);
 
 app.get('/', (req, res) => {
     res.send('Welcome! Server is running');

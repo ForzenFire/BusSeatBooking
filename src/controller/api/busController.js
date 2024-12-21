@@ -4,7 +4,7 @@ const Conductor = require('../../model/Conductor');
 
 exports.createBus = async (req, res) => {
     try {
-        const { busNumber, seatingCapacity, type, driverId} = req.body;
+        const { busNumber, seatingCapacity, type, driverNic, conductorId} = req.body;
         const driver = await Driver.findOne({ nic: driverNic});
         if(!driver){
             return res.status(404).json({message: 'Driver not founded with Provided NIC'});
@@ -14,8 +14,8 @@ exports.createBus = async (req, res) => {
             return res.status(404).json({ message: 'Conducotr not found with Provided ID'})
         }
         const bus = new Bus({ busNumber, seatingCapacity, type, driverNic:driver.nic, conductorId:conductor.conductorId});
-        await bus.save();(201).json({ message: 'Bus created successfully', bus});
-        res.status
+        await bus.save();
+        res.status(201).json({ message: 'Bus created successfully', bus});
     } catch (error) {
         res.status(500).json({error: 'Failed to create a bus', details: error.message });
     }   

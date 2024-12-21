@@ -1,12 +1,6 @@
 // File: src/controllers/api/driver.js
 const express = require('express');
-const {
-    createDriver,
-    getDrivers,
-    getDriverById,
-    updateDriver,
-    // deleteDriver,
-} = require('./driverController');
+const { createDriver, getDrivers, getDriverById, updateDriver } = require('../api/driverController');
 
 const router = express.Router();
 

@@ -16,8 +16,8 @@ function Login() {
       <MDBCol col='4' md='6'>
 
 
-        <MDBInput wrapperClass='mb-4' label='Email address' id='formControlLg' type='email' size="lg"/>
-        <MDBInput wrapperClass='mb-4' label='Password' id='formControlLg' type='password' size="lg"/>
+        <MDBInput wrapperClass='mb-5' label='Email address' id='formControlLg' type='email' size="lg"/>
+        <MDBInput wrapperClass='mb-5' label='Password' id='formControlLg' type='password' size="lg"/>
 
 
         <div className="d-flex justify-content-between mx-4 mb-4">
@@ -27,7 +27,7 @@ function Login() {
 
         <MDBBtn className="mb-4 w-100" size="lg">Sign in</MDBBtn>
 
-        <div className="divider d-flex align-items-center my-4">
+        {/* <div className="divider d-flex align-items-center my-4">
           <p className="text-center fw-bold mx-3 mb-0">OR</p>
         </div>
 
@@ -39,7 +39,7 @@ function Login() {
         <MDBBtn className="mb-4 w-100" size="lg" style={{backgroundColor: '#55acee'}}>
           <MDBIcon fab icon="twitter" className="mx-2"/>
           Continue with twitter
-        </MDBBtn>
+        </MDBBtn> */}
 
       </MDBCol>
 

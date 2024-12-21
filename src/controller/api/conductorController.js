@@ -2,10 +2,10 @@ const Conductor = require('../../model/Conductor');
 
 exports.createConductor = async (req, res) => {
     try {
-        const { nic,conductorId, name,contact,addres } = req.body;
-        const conductor = new Conductor({nic,conductorId, name,contact,addres });
+        const { nic,conductorId, name,contact,address } = req.body;
+        const conductor = new Conductor({nic,conductorId, name,contact,address });
         await conductor.save();
-        res.status(201).json({message: 'COnductor created successfully', conductor});
+        res.status(201).json({message: 'Conductor created successfully', conductor});
     } catch (error) {
         res.status(500).json({error: 'Failed to create conductor', details: error.message});
     }
@@ -32,7 +32,7 @@ exports.getConductorById = async (req, res) =>  {
 
 exports.updateConductor = async (req, res) => {
     try {
-        const { name,contact,addres } = req.body;
+        const { name,contact,address } = req.body;
         const conductor = await Conductor.findOneAndUpdate(
             { conductorId: req.params.conductorId },
             { name, contact, address },
