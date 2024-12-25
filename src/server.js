@@ -15,6 +15,8 @@ const busRoutes = require('./controller/routes/bus');
 const conductorRoutes = require('./controller/routes/conductor');
 const busScheduleROutes = require('./controller/routes/busSchedule');
 const authRoutes = require('./controller/routes/auth');
+const reservationRoutes = require('./controller/routes/reservation');
+const { cleanupExpiredHolds } = require('./controller/api/reservationController');
 
 app.use('/api/routes', routeRoutes);
 app.use('/api/drivers', driverRoutes);
@@ -22,10 +24,15 @@ app.use('/api/buses', busRoutes);
 app.use('/api/schedule', busScheduleROutes);
 app.use('/api/conductor', conductorRoutes);
 app.use('/api/auth', authRoutes);
+app.use('/api/reservations', reservationRoutes);
 
 app.get('/', (req, res) => {
     res.send('Welcome! Server is running');
 });
+
+setInterval(() => {
+    cleanupExpiredHolds();
+}, 10*60*1000 );
 
 // const mongoUrl = process.env.MONGO_URL;
 // if(!mongoUrl){

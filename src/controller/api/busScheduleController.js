@@ -1,6 +1,7 @@
 const BusSchedule = require('../../model/BusSchedule');
 const Route = require('../../model/Routes');
 const Bus = require('../../model/Bus');
+const mongoose = require('mongoose');
 
 exports.createBusSchedule = async (req, res) => {
     try {
@@ -16,8 +17,8 @@ exports.createBusSchedule = async (req, res) => {
 
         const schedule = new BusSchedule({
             scheduleId,
-            routeId: route.routeId,
-            busId: bus.busNumber,
+            routeId: route._id,
+            busId: bus._id,
             routeDate,
             startingTime,
             closingTime,
@@ -33,7 +34,12 @@ exports.createBusSchedule = async (req, res) => {
 exports.getBusSchedules = async (req, res) => {
     try {
         const schedules = await BusSchedule.find()
-            .populate('routeId', 'origin destination distance')
+            .populate('routeId', 'routeId origin destination')
+        // .populate({
+            //     path:'routeId',
+            //     match: {_id: mongoose.Types.ObjectId.isValid('routeId') ? routeId : null },
+            //     select: 'origin destination distance', 
+            // })
             .populate('busId', 'busNumber type seatingCapacity');
         res.status(200).json(schedules);
     } catch (error) {
@@ -43,11 +49,22 @@ exports.getBusSchedules = async (req, res) => {
 
 exports.getBusSchedulesById = async (req, res) => {
     try {
-        const schedule = await BusSchedule.findOne({ scheduleId: req.params.scheduleId })
-            .populate('routeId', 'origin destination distance') 
+        const { id } = req.params;
+        console.log('Received schedule ID:', id);
+
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return res.status(400).json({ error: 'Invalid schedule ID: ${id}' });
+        }
+        
+        const schedule = await BusSchedule.findById(id)
+            .populate('routeId', 'routeId origin') 
             .populate('busId', 'busNumber type seatingCapacity');
         if (!schedule) {
             return res.status(404).json({ message: 'Bus schedule not found' });
+        }
+        if (!schedule.routeId){
+            console.error('Route not found for schedule:', req.params.scheduleId);
+            return res.status(404).json({message: 'Route not found for this schedule'});
         }
         res.status(200).json(schedule);
     } catch (error) {

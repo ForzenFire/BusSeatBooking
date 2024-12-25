@@ -2,7 +2,7 @@ const { default: mongoose } = require("mongoose");
 
 const BusScheduleSchema = new mongoose.Schema({
     scheduleId: {type: String, required: true, unique: true},
-    routeId: {type: String, ref: 'Route', required: true},
+    routeId: {type: String, ref: 'Routes', required: true},
     busId: {type: String, ref: 'Bus', required: true},
     routeDate: {type: Date, required: true},
     startingTime: {type: String, required: true},

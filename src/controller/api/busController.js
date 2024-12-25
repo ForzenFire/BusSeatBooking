@@ -13,7 +13,12 @@ exports.createBus = async (req, res) => {
         if(!conductor) {
             return res.status(404).json({ message: 'Conducotr not found with Provided ID'})
         }
-        const bus = new Bus({ busNumber, seatingCapacity, type, driverNic:driver.nic, conductorId:conductor.conductorId});
+        const bus = new Bus({ 
+            busNumber, 
+            seatingCapacity, 
+            type, 
+            driverNic:driver._id, 
+            conductorId:conductor._id});
         await bus.save();
         res.status(201).json({ message: 'Bus created successfully', bus});
     } catch (error) {
@@ -29,6 +34,22 @@ exports.getBuses = async (req, res) => {
         res.status(200).json(buses);
     } catch (error) {
         res.status(500).json({ error: 'Failed to fetch buses', details: error.message });
+    }
+};
+
+exports.getBusById = async (req, res) => {
+    try{
+        const { id } = req.params;
+        const bus = await Bus.findById(id)
+            .populate('driverNic', 'name nic')
+            .populate('conductorId', 'name conductorId');
+
+            if(!bus) {
+                return res.status(404).json({message: 'Bus not found'});
+            }
+            res.status(200).json(bus);
+    } catch (error) {
+        res.status(500).json({error: 'Failed to fetch bus', details: error.message});
     }
 };
 

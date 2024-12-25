@@ -22,8 +22,14 @@ exports.getRoutes = async (req, res) => {
 
 exports.getRouteById = async (req, res) => {
     try {
-        const route = await Route.findOne({routeId: req.params.routeId});
+        const [ routeId ] = req.params;
+        if(!mongoose.Types.ObjectId.isValid(routeId)) {
+            return res.status(400).json({message: 'Invalid Route Id'});
+        }
+        const route = await Route.findOne({routeId});
+        
         if(!route) return res.status(404).json({message: 'Route not Found'})
+        res.status(200).json(route);
     } catch (error) {
         res.status(500).json({error: 'Failed to fetch rotue', details: error.message});
     }
