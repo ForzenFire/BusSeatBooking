@@ -5,8 +5,8 @@ const router = express.Router();
 
 router.post('/', createConductor);
 router.get('/',getConductors);
-router.get('/:conductorId', getConductorById);
-router.get('/:conductorId', updateConductor);
-router.get('/:conductorId', deleteConductor);
+router.get('/:id', getConductorById);
+router.get('/:id', updateConductor);
+router.get('/:id', deleteConductor);
 
 module.exports = router;

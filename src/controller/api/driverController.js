@@ -14,7 +14,7 @@ exports.createDriver = async (req, res) => {
 exports.getDrivers = async (req, res) => {
     try {
         const drivers = await Driver.find();
-        res,status(200).json(drivers);
+        res.status(200).json(drivers);
     } catch (error) {
         res.status(500).json({error: 'Failed to fetch drivers', details: error.message});
     }
@@ -22,7 +22,8 @@ exports.getDrivers = async (req, res) => {
 
 exports.getDriverById = async (req, res) => {
     try {
-        const driver = await Driver.findOne({nic: req.params.nic});
+        const { id } = req.params;
+        const driver = await Driver.findById(id);
         if(!nic) return res.status(404).json({message: 'Driver not found'});
         res.status(200).json(driver);
     } catch (error) {

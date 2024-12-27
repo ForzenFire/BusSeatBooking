@@ -6,6 +6,6 @@ const router = express.Router();
 router.post('/', createBus);
 router.get('/', getBuses);
 router.get('/:id', getBusById);
-router.get('/:busNumber', updateBus);
+router.get('/:id', updateBus);
 
 module.exports = router;

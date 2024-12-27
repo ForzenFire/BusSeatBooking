@@ -22,7 +22,9 @@ exports.getConductors = async (req, res) => {
 
 exports.getConductorById = async (req, res) =>  {
     try {
-        const conductor = await Conductor.findOne({ conductorId: req.params.conductorId});
+        const { id } = req.params;
+        const conductor = await Conductor.findById(id);
+
         if(!conductor) return res.status(404).json({ message: 'Conductor not found'});
         res.status(200).json(conductor);
     } catch (error) {

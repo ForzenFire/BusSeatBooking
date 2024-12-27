@@ -5,8 +5,8 @@ const router = express.Router();
 
 router.post('/', createRoute);
 router.get('/', getRoutes);
-router.get('/:routeId', getRouteById);
-router.put('/:routeId', updateRoute);
-router.delete('/:routeId', deleteRoute);
+router.get('/:id', getRouteById);
+router.put('/:id', updateRoute);
+router.delete('/:id', deleteRoute);
 
 module.exports = router;
