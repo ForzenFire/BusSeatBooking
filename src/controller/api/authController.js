@@ -25,9 +25,9 @@ exports.login = async (req, res) => {
         const isPasswordValid = await bcrypt.compare(password, user.password);
         if(!isPasswordValid) return res.status(401).json({message: 'Invalud Credentials'});
 
-        const token = jwt.sign({id: user._id, role: user.role }, process.env.JWT_SECRET, {expiresIn: '1h'});
+        const token = jwt.sign({userId: user._id, role: user.role }, process.env.JWT_SECRET, {expiresIn: '1h'});
         res.status(200).json({message: 'Login Successful', token,
-            user: {id: user._id, name: user.name, email: user.email, role: user.role }
+            user: {userId: user._id, name: user.name, email: user.email, role: user.role }
         });
     } catch (error) {
         res.status(500).json({error: 'Server Error '});

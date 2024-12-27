@@ -41,25 +41,36 @@ exports.reserveSeats = async (req, res) => {
         await session.abortTransaction();
         session.endSession();
         res.status(500).json({error: 'Server Error'});
+    } finally {
+        session.endSession();
     }
 };
 
 exports.confirmReservation = async (req, res) => {
     try {
+        const token = req.headers.authorization?.split(' ')[1];
+        if(!token) return res.status(401).json({message: 'Unauthorized'});
+
+        const { userId } = jwt.verify(token, process.env.JWT_SECRET);
         const { reservationId } = req.body;
+
+        if(!mongoose.isValidObjectId(reservationId)){
+            return res.status(400).json({ message: 'Invalid reservation ID' });
+        }
+
         const reservation = await Reservation.findOneAndUpdate(
-            { reservationId, reservationStatus: 'Hold', holdExpiresAt: { $gt: new Date()}},
+            { reservationId, userId, reservationStatus: 'Hold', holdExpiresAt: { $gt: new Date()} },
             { reservationStatus: 'Confirmed', holdExpiresAt: null },
             { new: true }
         );
 
         if (!reservation) {
-            return res.status(404).json({message: 'Reservation nor found or Already expired'});
+            return res.status(404).json({message: 'Reservation not found or Already expired'});
         }
 
         res.status(200).json({ message: 'Reservation Confiremed', reservation});
     } catch (error) {
-        res.status(500).json({error: 'Server Error'});
+        res.status(500).json({error: 'Failed to confirm reservation', details: error.message});
     }
 };
 
@@ -67,7 +78,7 @@ exports.cleanupExpiredHolds = async () => {
     const now = new Date();
     try {
         const result = await Reservation.deleteMany({ reservationStatus: 'Hold', holdExpiresAt: {$lt: now} });
-        console.log('Expired holds cleaned up: ${result.deletedCount} reservations');
+        console.log(`Expired holds cleaned up: ${result.deletedCount} reservations`);
     } catch (error) {
         console.log('Erro cleaning up expired holds', error);
     }

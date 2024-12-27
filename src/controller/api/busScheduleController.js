@@ -57,7 +57,7 @@ exports.getBusSchedulesById = async (req, res) => {
         }
         
         const schedule = await BusSchedule.findById(id)
-            .populate('routeId', 'routeId origin') 
+            .populate('routeId', 'routeId origin destination') 
             .populate('busId', 'busNumber type seatingCapacity');
         if (!schedule) {
             return res.status(404).json({ message: 'Bus schedule not found' });

@@ -29,8 +29,8 @@ exports.createBus = async (req, res) => {
 exports.getBuses = async (req, res) => {
     try {
         const buses = await Bus.find()
-            .populate('driverNic', 'name contact licenseNumber')
-            .populate('conductorId', 'name contact conductorId');
+            .populate('driverNic', 'nic name')
+            .populate('conductorId', 'conductorId name');
         res.status(200).json(buses);
     } catch (error) {
         res.status(500).json({ error: 'Failed to fetch buses', details: error.message });
@@ -41,8 +41,8 @@ exports.getBusById = async (req, res) => {
     try{
         const { id } = req.params;
         const bus = await Bus.findById(id)
-            .populate('driverNic', 'name nic')
-            .populate('conductorId', 'name conductorId');
+            .populate('driverNic', 'nic name')
+            .populate('conductorId', 'conductorId name');
 
             if(!bus) {
                 return res.status(404).json({message: 'Bus not found'});
