@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 
 const ReservationSchema = new mongoose.Schema({
-    reservationId : {type: String, required: true, unique: true },
     scheduleId: { type: String, ref: 'BusSchedule', required: true },
     userId: { type: String, ref: 'User', required: true },
     seatsReserved: {type: Number, required: true },
