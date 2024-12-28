@@ -24,7 +24,7 @@ exports.getDriverById = async (req, res) => {
     try {
         const { id } = req.params;
         const driver = await Driver.findById(id);
-        if(!nic) return res.status(404).json({message: 'Driver not found'});
+        if(!driver) return res.status(404).json({message: 'Driver not found'});
         res.status(200).json(driver);
     } catch (error) {
         res.status(500).json({error: 'Failed to fetch the driver', details: error.message});
