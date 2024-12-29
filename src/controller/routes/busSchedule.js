@@ -6,7 +6,7 @@ const router = express.Router();
 
 router.post('/', authenticate, authorize('admin'), createBusSchedule); 
 router.get('/', authenticate, getBusSchedules);  
-router.get('/:id', authenticate, authorize('admin', 'operator'), getBusSchedulesById);
+router.get('/:id', authenticate, getBusSchedulesById);
 router.put('/:id', authenticate, authorize('admin'), updateBusSchedule); 
 router.delete('/:id', authenticate, authorize('admin'), deleteBusSchedule); 
 

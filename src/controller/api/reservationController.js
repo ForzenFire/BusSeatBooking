@@ -62,20 +62,19 @@ exports.confirmReservation = async (req, res) => {
             return res.status(400).json({ message: 'Invalid reservation ID' });
         }
 
-        const reservationData = await Reservation.findById(reservationId);
-        if (!reservationData) {
-            return res.status(404).json({ message: 'Reservation not found in the database' });
-        }
-        console.log('Reservation Data:', reservationData);
+        // const reservationData = await Reservation.findById(reservationId);
+        // if (!reservationData) {
+        //     return res.status(404).json({ message: 'Reservation not found in the database' });
+        // }
+        // console.log('Reservation Data:', reservationData);
 
-        // Step 2: Log userId and query conditions
-        console.log('User ID:', userId);
-        console.log('Query conditions: ', {
-            _id: reservationId,
-            userId,
-            reservationStatus: 'Hold',
-            holdExpiresAt: { $gt: new Date() },
-        });
+        // console.log('User ID:', userId);
+        // console.log('Query conditions: ', {
+        //     _id: reservationId,
+        //     userId,
+        //     reservationStatus: 'Hold',
+        //     holdExpiresAt: { $gt: new Date() },
+        // });
 
         const reservation = await Reservation.findOneAndUpdate(
             { 
@@ -105,5 +104,32 @@ exports.cleanupExpiredHolds = async () => {
         console.log(`Expired holds cleaned up: ${result.deletedCount} reservations`);
     } catch (error) {
         console.log('Erro cleaning up expired holds', error);
+    }
+};
+
+exports.getSeatInfo = async (req, res) => {
+    try {
+        const { scheduleId } = req.params;
+
+        const schedule = await BusSchedule.findOne({scheduleId}).populate('busId');
+        if (!schedule) {
+            return res.status(404).json({ message: 'Schedule not found'});
+        }
+
+        const totalSeats = schedule.busId.seatingCapacity;
+        const reservation = await Reservation.find({scheduleId: schedule._id});
+        const heldSeats = reservation.filter(r => r.reservationStatus === 'Hold').reduce((sum, r) => sum + r.seatsReserved, 0);
+        const confirmSeats = reservation.filter(r => r.reservationStatus === 'Confirmed').reduce((sum, r) => sum + r.seatsReserved, 0);
+        const availableSeats = totalSeats - (heldSeats + confirmSeats);
+
+        return res.status(200).json({
+            totalSeats,
+            availableSeats,
+            confirmSeats,
+            heldSeats,
+        });
+    } catch (error) {
+        console.log('Error fetiching seat info', error);
+        return res.status(500).json({message: 'Internal server error', default: error.message});
     }
 };
