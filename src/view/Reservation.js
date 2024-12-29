@@ -20,7 +20,7 @@ export default function Reservation() {
       return;
     }
 
-    axios.get('http://localhost:5000/api/schedule/',{
+    axios.get('http://localhost:80/api/schedule/',{
       headers: { Authorization: `Bearer ${token}`},
     })
       .then(response => setSchedule(response.data))
@@ -38,7 +38,7 @@ export default function Reservation() {
     
   const fetchSeatInfo = async (scheduleId) => {
     try {
-      const response = await axios.get(`http://localhost:5000/api/reservations/seat-info/${scheduleId}`);
+      const response = await axios.get(`http://localhost:80/api/reservations/seat-info/${scheduleId}`);
       const { availableSeats, heldSeats, confirmSeats, totalSeats } = response.data;
       setAvailableSeats(availableSeats);
       setHeldSeats(heldSeats);
@@ -86,7 +86,7 @@ export default function Reservation() {
     }
 
     const token = localStorage.getItem('token');
-    axios.post('http://localhost:5000/api/reservations/confirm',
+    axios.post('http://localhost:80/api/reservations/confirm',
       {reservationId: heldReservationId},
       {headers: {Authorization: `Bearer ${token}`}}
     )
