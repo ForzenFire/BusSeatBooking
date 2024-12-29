@@ -14,11 +14,11 @@ function Login() {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:80/api/auth/login',{ email, password});
+      const response = await axios.post('http://52.91.227.161:80/api/auth/login',{ email, password});
       const {message, token, user} = response.data;
       const { role } = user;
       alert(message);
-      console.log('API Response:', response.data);
+      // console.log('API Response:', response.data);
       console.log('Role:', role);
 
       localStorage.setItem('token', token);
@@ -41,7 +41,7 @@ function Login() {
     <MDBRow>
 
       <MDBCol col='10' md='6'>
-        <img src="http://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.svg" className="img-fluid" alt="Phone image" />
+        <img src="http://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.svg" className="img-fluid" alt="" />
       </MDBCol>
 
       <MDBCol col='4' md='6'>
