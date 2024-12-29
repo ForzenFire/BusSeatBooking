@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { MDBContainer, MDBCol, MDBRow, MDBBtn, MDBIcon, MDBInput, MDBCheckbox } from 'mdb-react-ui-kit';
+import { MDBContainer, MDBCol, MDBRow, MDBBtn, MDBInput, MDBCheckbox } from 'mdb-react-ui-kit';
 import './login.css';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
