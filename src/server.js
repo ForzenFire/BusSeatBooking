@@ -2,12 +2,23 @@ const bodyParser = require('body-parser');
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
+const swaggerJsdoc = require('swagger-jsdoc');
+const swaggerUi = require('swagger-ui-express');
+const swaggerDefinition = require('../docs/swaggerDefinition');
+
 require('dotenv').config();
 
 const app = express();
 
 app.use(cors());
 app.use(bodyParser.json());
+
+const options = {
+    swaggerDefinition,
+    apis: ['./controller/routes/*.js'],
+};
+
+const swaggerSpec = swaggerJsdoc(options);
 
 const routeRoutes = require('./controller/routes/route');
 const driverRoutes = require('./controller/routes/driver');
@@ -25,6 +36,8 @@ app.use('/api/schedule', busScheduleRoutes);
 app.use('/api/conductor', conductorRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/reservations', reservationRoutes);
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+app.use('/*', (req, res) => res.status(404).send("Endpoint not found"));
 
 app.get('/', (req, res) => {
     res.send('Welcome! Server is running');
@@ -34,11 +47,6 @@ setInterval(() => {
     cleanupExpiredHolds();
 }, 10*60*1000 );
 
-// const mongoUrl = process.env.MONGO_URL;
-// if(!mongoUrl){
-//     console.log('Mongo URL is not defined in env variables')
-//     process.exit(1);
-// }
 mongoose.connect(process.env.MONGO_URL, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
